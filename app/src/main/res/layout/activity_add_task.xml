@@ -12,6 +12,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"
+      android:textColor="@color/pink50_600"
       android:fontFamily="sans-serif-condensed-light"
       android:text="@string/add_task_label"
       android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -30,6 +31,7 @@
       android:layout_marginEnd="16dp"
       android:layout_marginRight="16dp"
       android:background="@drawable/rounded_container"
+      android:elevation="10dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/add_task_label">
@@ -59,8 +61,10 @@
         android:layout_marginEnd="150dp"
         android:layout_marginRight="150dp"
         android:background="@drawable/rounded_edit_text"
+        android:elevation="6dp"
         android:ems="10"
         android:inputType="textEmailAddress"
+        android:paddingLeft="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/task_label" />
@@ -90,8 +94,10 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/rounded_edit_text"
+        android:elevation="6dp"
         android:ems="10"
         android:inputType="textMultiLine"
+        android:paddingLeft="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note_label" />
@@ -121,8 +127,10 @@
         android:layout_marginEnd="150dp"
         android:layout_marginRight="150dp"
         android:background="@drawable/rounded_edit_text"
+        android:elevation="6dp"
         android:ems="10"
         android:inputType="date"
+        android:paddingLeft="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -153,24 +161,30 @@
         android:layout_marginEnd="150dp"
         android:layout_marginRight="150dp"
         android:background="@drawable/rounded_edit_text"
+        android:elevation="6dp"
         android:ems="10"
         android:inputType="time"
+        android:paddingLeft="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time_label" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
-        android:clickable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_edit_text"
-        app:srcCompat="?android:attr/textCheckMark" />
-
   </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <Button
+      android:id="@+id/add_btn"
+      style="?android:attr/borderlessButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:background="@drawable/circular_btn"
+      android:elevation="18dp"
+      android:fontFamily="sans-serif-condensed-light"
+      android:text="@string/add_btn"
+      android:textSize="18dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
