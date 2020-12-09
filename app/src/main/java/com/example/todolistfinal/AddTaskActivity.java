@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -12,11 +13,15 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.example.todolistfinal.model.TodoTask;
+
 import java.util.Calendar;
 
 public class AddTaskActivity extends AppCompatActivity {
 
     private Button mAddBtn;
+    private EditText mTaskName;
+    private EditText mNote;
     private EditText mDateEditText;
     private DatePickerDialog mDatePickerDialog;
     private EditText mTimeEditText;
@@ -28,8 +33,12 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
         final Calendar calendar = Calendar.getInstance();
-        mAddBtn = findViewById(R.id.add_btn);
+        mTaskName = findViewById(R.id.task_edit_text);
+        mNote = findViewById(R.id.note_edit_text);
 
+        /**
+         * Code to get date picker working on the editText
+         */
         mDateEditText = findViewById(R.id.date_edit_text);
         mDateEditText.setInputType(InputType.TYPE_NULL);
         mDateEditText.setOnClickListener(view -> {
@@ -44,6 +53,9 @@ public class AddTaskActivity extends AppCompatActivity {
             mDatePickerDialog.show();
         });
 
+        /**
+         * Code to get the timePicker working on the editText
+         */
         mTimeEditText = findViewById(R.id.time_edit_text);
         mTimeEditText.setInputType(InputType.TYPE_NULL);
         mTimeEditText.setOnClickListener(view -> {
@@ -61,5 +73,27 @@ public class AddTaskActivity extends AppCompatActivity {
                     }, currentHour, currentMinute, false);
             mTimePickerDialog.show();
         });
+
+        /**
+         * what will happen when the button is pressed
+         */
+        mAddBtn = findViewById(R.id.add_btn);
+        mAddBtn.setOnClickListener(view -> {
+            String name = mTaskName.getText().toString();
+            String note = mNote.getText().toString();
+            String dateTime = mDateEditText.getText().toString() + ", " +
+                    mTimeEditText.getText().toString();
+
+            Intent intent = new Intent();
+            intent.putExtra("name", name);
+            intent.putExtra("note", note);
+            intent.putExtra("dateTime", dateTime);
+
+            setResult(RESULT_OK, intent);
+            finish();
+
+        });
+
     }
+
 }
