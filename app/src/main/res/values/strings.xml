@@ -2,7 +2,7 @@
     <string name="app_name">TODO List Final</string>
     <string name="add_task_label">ADD TASK</string>
     <string name="task_label">TASK</string>
-    <string name="note_label">NOTE</string>
+    <string name="desc_label">DESCRIPTION</string>
     <string name="date_label">DATE</string>
     <string name="time_label">TIME</string>
     <string name="add_btn">ADD TASK</string>

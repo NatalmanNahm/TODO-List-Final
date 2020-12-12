@@ -62,6 +62,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         @Bind(R.id.task) TextView taskName;
         @Bind(R.id.date_n_time) TextView dateTime;
+        @Bind(R.id.desc) TextView desc;
         @Bind(R.id.checkBox) CheckBox checkBox;
         Context mContext;
 
@@ -76,6 +77,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             taskName.setText(todoTask.getTaskName());
             dateTime.setText(todoTask.getDateTime());
             checkBox.setChecked(todoTask.getIsChecked());
+            desc.setText(todoTask.getTaskDesc());
         }
     }
 }

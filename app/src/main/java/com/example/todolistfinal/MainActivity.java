@@ -12,10 +12,8 @@ import android.view.View;
 
 import com.example.todolistfinal.Adapater.TaskAdapter;
 import com.example.todolistfinal.model.TodoTask;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     
@@ -24,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskAdapter taskAdapter;
     private ArrayList<TodoTask> todoList = new ArrayList<>();
     String name;
-    String note;
+    String desc;
     String dateTime;
 
     @Override
@@ -54,12 +52,12 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK){
                 name = data.getStringExtra("name");
                 Log.i("NAMETASK", name);
-                note = data.getStringExtra("note");
-                Log.i("NAMETASK", note);
+                desc = data.getStringExtra("desc");
+                Log.i("NAMETASK", desc);
                 dateTime = data.getStringExtra("dateTime");
                 Log.i("NAMETASK", dateTime);
 
-                TodoTask todoTask = new TodoTask(true, name, note, dateTime);
+                TodoTask todoTask = new TodoTask(true, name, desc, dateTime);
                 todoList.add(todoTask);
                 taskAdapter.setTodoList(todoList);
             }

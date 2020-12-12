@@ -8,13 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
-
-import com.example.todolistfinal.model.TodoTask;
 
 import java.util.Calendar;
 
@@ -22,7 +17,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private Button mAddBtn;
     private EditText mTaskName;
-    private EditText mNote;
+    private EditText mDesc;
     private EditText mDateEditText;
     private DatePickerDialog mDatePickerDialog;
     private EditText mTimeEditText;
@@ -35,7 +30,7 @@ public class AddTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
         final Calendar calendar = Calendar.getInstance();
         mTaskName = findViewById(R.id.task_edit_text);
-        mNote = findViewById(R.id.note_edit_text);
+        mDesc = findViewById(R.id.note_edit_text);
 
         /**
          * Code to get date picker working on the editText
@@ -81,13 +76,13 @@ public class AddTaskActivity extends AppCompatActivity {
         mAddBtn = findViewById(R.id.add_btn);
         mAddBtn.setOnClickListener(view -> {
             String name = mTaskName.getText().toString();
-            String note = mNote.getText().toString();
+            String desc = mDesc.getText().toString();
             String dateTime = mDateEditText.getText().toString() + ", " +
                     mTimeEditText.getText().toString();
 
             Intent intent = new Intent();
             intent.putExtra("name", name);
-            intent.putExtra("note", note);
+            intent.putExtra("desc", desc);
             intent.putExtra("dateTime", dateTime);
             Log.i("NAMETASK", dateTime);
 

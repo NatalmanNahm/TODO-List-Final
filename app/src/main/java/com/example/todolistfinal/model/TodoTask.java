@@ -5,13 +5,13 @@ public class TodoTask {
     //initialize
     private boolean isChecked;
     private String taskName;
-    private String taskNote;
+    private String taskDesc;
     private String dateTime;
 
     public TodoTask(boolean isChecked, String taskName, String taskNote, String dateTime) {
         this.isChecked = isChecked;
         this.taskName = taskName;
-        this.taskNote = taskNote;
+        this.taskDesc = taskNote;
         this.dateTime = dateTime;
     }
 
@@ -23,8 +23,8 @@ public class TodoTask {
         return taskName;
     }
 
-    public String getTaskNote() {
-        return taskNote;
+    public String getTaskDesc() {
+        return taskDesc;
     }
 
     public String getDateTime() {
