@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     String desc;
     String dateTime;
     DBHelper dbHelper;
+    AlertDialog.Builder alertBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         dbHelper = new DBHelper(getApplicationContext(), dbHelper.DATABASE_NAME, null, dbHelper.VERSION);
-        taskAdapter = new TaskAdapter(getApplicationContext(), dbHelper);
+        alertBox = new AlertDialog.Builder(this);
+        taskAdapter = new TaskAdapter(getApplicationContext(), dbHelper, alertBox);
         recyclerView.setAdapter(taskAdapter);
 
     }

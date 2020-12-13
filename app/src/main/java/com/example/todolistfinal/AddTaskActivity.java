@@ -85,7 +85,7 @@ public class AddTaskActivity extends AppCompatActivity {
             String dateTime = mDateEditText.getText().toString() + ", " +
                     mTimeEditText.getText().toString();
 
-            dbHelper.insertItem(name, desc, dateTime);
+            dbHelper.insertItem(name, desc, dateTime, false);
             finish();
 
         });

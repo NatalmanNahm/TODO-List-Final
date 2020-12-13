@@ -1,10 +1,13 @@
 package com.example.todolistfinal.Adapater;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,11 +28,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private ArrayList<TodoTask> todoList = new ArrayList<>();
     DBHelper dbHelper;
     Context mContext;
+    AlertDialog.Builder alertDialog;
 
-    public TaskAdapter(Context context, DBHelper dbHelper) {
+    public TaskAdapter(Context context, DBHelper dbHelper, AlertDialog.Builder alertDialog) {
         mContext = context;
         this.todoList = dbHelper.getAllItems();
         this.dbHelper = dbHelper;
+        this.alertDialog = alertDialog;
     }
 
     @NonNull
@@ -48,6 +53,55 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @Override
     public void onBindViewHolder(@NonNull TaskAdapter.TaskViewHolder holder, int position) {
         holder.bindTodo(todoList.get(position));
+        TodoTask todoTask = todoList.get(position);
+
+        holder.checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (holder.checkBox.isChecked()){
+                alertDialog.setMessage(R.string.box_message_true);
+                alertDialog.setPositiveButton("Done", (dialogInterface, i) -> {
+                    dbHelper.deleteItem(todoTask.getTaskId());
+                    todoList.remove(holder.getAdapterPosition());
+                    dbHelper.insertItem(todoTask.getTaskName(), todoTask.getTaskDesc(),
+                            todoTask.getDateTime(),true);
+                    todoList = dbHelper.getAllItems();
+                    notifyDataSetChanged();
+                    dialogInterface.cancel();
+                });
+                alertDialog.setNegativeButton("Delete", (dialogInterface, i) -> {
+                    dbHelper.deleteItem(todoTask.getTaskId());
+                    todoList = dbHelper.getAllItems();
+                    notifyDataSetChanged();
+                    dialogInterface.cancel();
+                });
+                alertDialog.setNeutralButton("Cancel", (dialogInterface, i) -> {
+                    dialogInterface.cancel();
+                });
+            } else {
+                alertDialog.setMessage(R.string.box_message_false);
+                alertDialog.setPositiveButton("add", (dialogInterface, i) -> {
+                    dbHelper.deleteItem(todoTask.getTaskId());
+                    todoList.remove(holder.getAdapterPosition());
+                    dbHelper.insertItem(todoTask.getTaskName(), todoTask.getTaskDesc(),
+                            todoTask.getDateTime(),false);
+                    todoList = dbHelper.getAllItems();
+                    notifyDataSetChanged();
+                    dialogInterface.cancel();
+                });
+                alertDialog.setNegativeButton("Delete", (dialogInterface, i) -> {
+                    dbHelper.deleteItem(todoTask.getTaskId());
+                    todoList = dbHelper.getAllItems();
+                    notifyDataSetChanged();
+                    dialogInterface.cancel();
+                });
+                alertDialog.setNeutralButton("Cancel", (dialogInterface, i) -> {
+                    dialogInterface.cancel();
+                });
+            }
+            alertDialog.setTitle("Task Management");
+
+            AlertDialog box = alertDialog.create();
+            box.show();
+        });
     }
 
     @Override

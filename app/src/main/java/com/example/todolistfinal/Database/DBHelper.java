@@ -43,19 +43,19 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public int insertItem(String name, String desc, String dateTime){
+    public int insertItem(String name, String desc, String dateTime, boolean checked){
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_TASK_NAME, name);
         contentValues.put(COL_TASK_DESC, desc);
         contentValues.put(COL_DATE_TIME, dateTime);
-        contentValues.put(COL_DONE, false);
+        contentValues.put(COL_DONE, checked);
         return (int) getWritableDatabase().insert(TABLE_NAME, null, contentValues);
     }
 
     public ArrayList<TodoTask> getAllItems(){
         Cursor cursor = getReadableDatabase().query(TABLE_NAME, new String[]{TASK_ID, COL_TASK_NAME,
         COL_TASK_DESC, COL_DATE_TIME, COL_DONE},
-                null, null, null, null, null);
+                null, null, null, null, COL_DONE);
 
         ArrayList<TodoTask> items = new ArrayList<>();
         if (cursor.moveToFirst()){
