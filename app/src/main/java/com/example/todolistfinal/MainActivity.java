@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.todolistfinal.Adapater.TaskAdapter;
+import com.example.todolistfinal.Database.DBHelper;
 import com.example.todolistfinal.model.TodoTask;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     String name;
     String desc;
     String dateTime;
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
-        taskAdapter = new TaskAdapter(getApplicationContext(), todoList);
+
+        dbHelper = new DBHelper(getApplicationContext(), dbHelper.DATABASE_NAME, null, dbHelper.VERSION);
+        taskAdapter = new TaskAdapter(getApplicationContext(), dbHelper);
         recyclerView.setAdapter(taskAdapter);
 
     }
@@ -45,29 +49,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 1){
-            if (resultCode == RESULT_OK){
-                name = data.getStringExtra("name");
-                Log.i("NAMETASK", name);
-                desc = data.getStringExtra("desc");
-                Log.i("NAMETASK", desc);
-                dateTime = data.getStringExtra("dateTime");
-                Log.i("NAMETASK", dateTime);
-
-                TodoTask todoTask = new TodoTask(false, name, desc, dateTime);
-                todoList.add(todoTask);
-                taskAdapter.setTodoList(todoList);
-            }
-        }
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-
+        todoList = dbHelper.getAllItems();
         taskAdapter.setTodoList(todoList);
     }
 }

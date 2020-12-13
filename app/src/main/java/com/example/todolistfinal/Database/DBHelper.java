@@ -74,4 +74,9 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return items;
     }
+
+    public boolean deleteItem(int id){
+        return getWritableDatabase().delete(TABLE_NAME, "_id=?",
+                new String[]{Integer.toString(id)}) > 0;
+    }
 }

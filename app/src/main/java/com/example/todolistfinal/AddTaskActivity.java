@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.todolistfinal.Database.DBHelper;
+
 import java.util.Calendar;
 
 public class AddTaskActivity extends AppCompatActivity {
@@ -23,6 +25,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private EditText mTimeEditText;
     private TimePickerDialog mTimePickerDialog;
     private String amPm;
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,8 @@ public class AddTaskActivity extends AppCompatActivity {
             mTimePickerDialog.show();
         });
 
+        dbHelper = new DBHelper(getApplicationContext(), dbHelper.DATABASE_NAME, null, dbHelper.VERSION);
+
         /**
          * what will happen when the button is pressed
          */
@@ -80,13 +85,7 @@ public class AddTaskActivity extends AppCompatActivity {
             String dateTime = mDateEditText.getText().toString() + ", " +
                     mTimeEditText.getText().toString();
 
-            Intent intent = new Intent();
-            intent.putExtra("name", name);
-            intent.putExtra("desc", desc);
-            intent.putExtra("dateTime", dateTime);
-            Log.i("NAMETASK", dateTime);
-
-            setResult(RESULT_OK, intent);
+            dbHelper.insertItem(name, desc, dateTime);
             finish();
 
         });

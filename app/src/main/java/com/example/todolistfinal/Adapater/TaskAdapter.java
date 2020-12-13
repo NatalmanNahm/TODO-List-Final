@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todolistfinal.Database.DBHelper;
 import com.example.todolistfinal.R;
 import com.example.todolistfinal.model.TodoTask;
 
@@ -22,11 +23,13 @@ import butterknife.ButterKnife;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder>{
 
     private ArrayList<TodoTask> todoList = new ArrayList<>();
+    DBHelper dbHelper;
     Context mContext;
 
-    public TaskAdapter(Context context, ArrayList<TodoTask> todoList) {
+    public TaskAdapter(Context context, DBHelper dbHelper) {
         mContext = context;
-        this.todoList = todoList;
+        this.todoList = dbHelper.getAllItems();
+        this.dbHelper = dbHelper;
     }
 
     @NonNull
