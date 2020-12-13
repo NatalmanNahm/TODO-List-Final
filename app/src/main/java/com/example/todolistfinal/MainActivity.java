@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 dateTime = data.getStringExtra("dateTime");
                 Log.i("NAMETASK", dateTime);
 
-                TodoTask todoTask = new TodoTask(true, name, desc, dateTime);
+                TodoTask todoTask = new TodoTask(false, name, desc, dateTime);
                 todoList.add(todoTask);
                 taskAdapter.setTodoList(todoList);
             }
