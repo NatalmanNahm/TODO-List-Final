@@ -23,9 +23,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
     private ArrayList<TodoTask> todoList = new ArrayList<>();
-    String name;
-    String desc;
-    String dateTime;
     DBHelper dbHelper;
     AlertDialog.Builder alertBox;
 

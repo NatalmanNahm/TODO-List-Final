@@ -42,6 +42,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public void setDone (int id, boolean done){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_DONE, done);
+        getWritableDatabase().update(TABLE_NAME, contentValues, "_id=?",
+                new String[]{Integer.toString(id)});
+    }
+
 
     public int insertItem(String name, String desc, String dateTime, boolean checked){
         ContentValues contentValues = new ContentValues();

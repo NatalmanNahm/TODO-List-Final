@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder>{
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private ArrayList<TodoTask> todoList = new ArrayList<>();
     DBHelper dbHelper;
@@ -56,49 +56,40 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         TodoTask todoTask = todoList.get(position);
 
         holder.checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (holder.checkBox.isChecked()){
+            if (holder.checkBox.isChecked()) {
                 alertDialog.setMessage(R.string.box_message_true);
                 alertDialog.setPositiveButton("Done", (dialogInterface, i) -> {
-                    dbHelper.deleteItem(todoTask.getTaskId());
-                    todoList.remove(holder.getAdapterPosition());
-                    dbHelper.insertItem(todoTask.getTaskName(), todoTask.getTaskDesc(),
-                            todoTask.getDateTime(),true);
+                    dbHelper.setDone(todoTask.getTaskId(), b);
                     todoList = dbHelper.getAllItems();
+//                    notifyItemRangeChanged(todoList.indexOf(todoTask), todoList.size());
                     notifyDataSetChanged();
-                    dialogInterface.cancel();
                 });
                 alertDialog.setNegativeButton("Delete", (dialogInterface, i) -> {
                     dbHelper.deleteItem(todoTask.getTaskId());
                     todoList = dbHelper.getAllItems();
-                    notifyDataSetChanged();
-                    dialogInterface.cancel();
+                    notifyItemRemoved(holder.getAdapterPosition());
                 });
                 alertDialog.setNeutralButton("Cancel", (dialogInterface, i) -> {
-                    dialogInterface.cancel();
+                    dialogInterface.dismiss();
                 });
             } else {
                 alertDialog.setMessage(R.string.box_message_false);
                 alertDialog.setPositiveButton("add", (dialogInterface, i) -> {
-                    dbHelper.deleteItem(todoTask.getTaskId());
-                    todoList.remove(holder.getAdapterPosition());
-                    dbHelper.insertItem(todoTask.getTaskName(), todoTask.getTaskDesc(),
-                            todoTask.getDateTime(),false);
+                    dbHelper.setDone(todoTask.getTaskId(), b);
                     todoList = dbHelper.getAllItems();
+//                    notifyItemRangeChanged(todoList.indexOf(todoTask), todoList.size());
                     notifyDataSetChanged();
-                    dialogInterface.cancel();
                 });
                 alertDialog.setNegativeButton("Delete", (dialogInterface, i) -> {
                     dbHelper.deleteItem(todoTask.getTaskId());
                     todoList = dbHelper.getAllItems();
-                    notifyDataSetChanged();
-                    dialogInterface.cancel();
+                    notifyItemRemoved(holder.getAdapterPosition());
                 });
                 alertDialog.setNeutralButton("Cancel", (dialogInterface, i) -> {
-                    dialogInterface.cancel();
+                    dialogInterface.dismiss();
                 });
             }
             alertDialog.setTitle("Task Management");
-
             AlertDialog box = alertDialog.create();
             box.show();
         });
@@ -106,7 +97,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public int getItemCount() {
-        if (todoList==null) return 0;
+        if (todoList == null) return 0;
         return todoList.size();
     }
 
@@ -117,10 +108,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     public class TaskViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.task) TextView taskName;
-        @Bind(R.id.date_n_time) TextView dateTime;
-        @Bind(R.id.desc) TextView desc;
-        @Bind(R.id.checkBox) CheckBox checkBox;
+        @Bind(R.id.task)
+        TextView taskName;
+        @Bind(R.id.date_n_time)
+        TextView dateTime;
+        @Bind(R.id.desc)
+        TextView desc;
+        @Bind(R.id.checkBox)
+        CheckBox checkBox;
         Context mContext;
 
         public TaskViewHolder(@NonNull View itemView) {
@@ -130,11 +125,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindTodo(TodoTask todoTask){
+        public void bindTodo(TodoTask todoTask) {
             taskName.setText(todoTask.getTaskName());
             dateTime.setText(todoTask.getDateTime());
             checkBox.setChecked(todoTask.getIsChecked());
             desc.setText(todoTask.getTaskDesc());
         }
     }
+
 }
