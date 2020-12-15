@@ -1,5 +1,6 @@
 package com.example.todolistfinal;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 
@@ -41,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         taskAdapter = new TaskAdapter(getApplicationContext(), dbHelper, alertBox);
         recyclerView.setAdapter(taskAdapter);
 
+        if (savedInstanceState != null){
+            todoList = savedInstanceState.getParcelableArrayList("todoList");
+        }
+
     }
     
     public void addTask(View view){
@@ -53,5 +59,11 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         todoList = dbHelper.getAllItems();
         taskAdapter.setTodoList(todoList);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putParcelableArrayList("todoList", todoList);
     }
 }

@@ -1,11 +1,13 @@
 package com.example.todolistfinal;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
@@ -34,11 +36,19 @@ public class AddTaskActivity extends AppCompatActivity {
         final Calendar calendar = Calendar.getInstance();
         mTaskName = findViewById(R.id.task_edit_text);
         mDesc = findViewById(R.id.note_edit_text);
+        mDateEditText = findViewById(R.id.date_edit_text);
+        mTimeEditText = findViewById(R.id.time_edit_text);
+
+        if (savedInstanceState != null){
+            mTaskName.setText(savedInstanceState.getString(DBHelper.COL_TASK_NAME));
+            mDesc.setText(savedInstanceState.getString(DBHelper.COL_TASK_DESC));
+            mDateEditText.setText(savedInstanceState.getString("date"));
+            mTimeEditText.setText(savedInstanceState.getString("time"));
+        }
 
         /**
          * Code to get date picker working on the editText
          */
-        mDateEditText = findViewById(R.id.date_edit_text);
         mDateEditText.setInputType(InputType.TYPE_NULL);
         mDateEditText.setOnClickListener(view -> {
             int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -55,7 +65,6 @@ public class AddTaskActivity extends AppCompatActivity {
         /**
          * Code to get the timePicker working on the editText
          */
-        mTimeEditText = findViewById(R.id.time_edit_text);
         mTimeEditText.setInputType(InputType.TYPE_NULL);
         mTimeEditText.setOnClickListener(view -> {
             int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -92,5 +101,13 @@ public class AddTaskActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putString(DBHelper.COL_TASK_NAME, mTaskName.getText().toString());
+        outState.putString(DBHelper.COL_TASK_DESC, mDesc.getText().toString());
+        outState.putString("date", mDateEditText.getText().toString());
+        outState.putString("time", mTimeEditText.getText().toString());
 
+    }
 }
