@@ -5,7 +5,7 @@
     <string name="desc_label">DESCRIPTION</string>
     <string name="date_label">DATE</string>
     <string name="time_label">TIME</string>
-    <string name="add_btn">ADD TASK</string>
+    <string name="add_btn">ADD\nTASK</string>
     <string name="box_message_true">Are you done with task or would you like to delete it?</string>
     <string name="box_message_false">Would you like to add task or delete?</string>
 </resources>
