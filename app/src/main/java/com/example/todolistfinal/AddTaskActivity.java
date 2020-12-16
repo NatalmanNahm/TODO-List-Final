@@ -9,13 +9,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.todolistfinal.Database.DBHelper;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class AddTaskActivity extends AppCompatActivity {
 
@@ -71,13 +75,11 @@ public class AddTaskActivity extends AppCompatActivity {
             int currentMinute = calendar.get(Calendar.MINUTE);
 
             mTimePickerDialog = new TimePickerDialog(AddTaskActivity.this,
-                    (timePicker, hour, min) -> {
-                        if (hour >= 12) {
-                            amPm = " PM";
-                        } else {
-                            amPm = " AM";
-                        }
-                        mTimeEditText.setText(String.format("%02d:%02d", hour, min) + amPm);
+                    (timePicker, hourOfDay, min) -> {
+                        int hour = hourOfDay % 12;
+                        if (hour == 0) hour = 12;
+                        String _AM_PM = (hourOfDay > 12) ? "PM" : "AM";
+                        mTimeEditText.setText(String.format(Locale.getDefault(), "%02d:%02d %s", hour, min, _AM_PM));
                     }, currentHour, currentMinute, false);
             mTimePickerDialog.show();
         });
@@ -94,8 +96,20 @@ public class AddTaskActivity extends AppCompatActivity {
             String dateTime = mDateEditText.getText().toString() + ", " +
                     mTimeEditText.getText().toString();
 
-            dbHelper.insertItem(name, desc, dateTime, false);
-            finish();
+            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(desc) ||
+                    TextUtils.isEmpty(mDateEditText.getText().toString()) ||
+                    TextUtils.isEmpty(mTimeEditText.getText().toString())){
+
+                Toast toast = Toast.makeText(this, "Error! add Entries", Toast.LENGTH_SHORT);
+                View toastView = toast.getView();
+                toastView.setBackgroundResource(R.drawable.rounded_container);
+                toast.show();
+            } else {
+                dbHelper.insertItem(name, desc, dateTime, false);
+                finish();
+            }
+
+
 
         });
 

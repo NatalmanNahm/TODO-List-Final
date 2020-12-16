@@ -62,17 +62,17 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<TodoTask> getAllItems(){
         Cursor cursor = getReadableDatabase().query(TABLE_NAME, new String[]{TASK_ID, COL_TASK_NAME,
         COL_TASK_DESC, COL_DATE_TIME, COL_DONE},
-                null, null, null, null, COL_DONE);
+                null, null, null, null, null);
 
         ArrayList<TodoTask> items = new ArrayList<>();
         if (cursor.moveToFirst()){
             do {
                 TodoTask item = new TodoTask(
                         cursor.getInt(cursor.getColumnIndex(TASK_ID)),
-                        cursor.getInt(cursor.getColumnIndex(COL_DONE)) == 1,
                         cursor.getString(cursor.getColumnIndex(COL_TASK_NAME)),
                         cursor.getString(cursor.getColumnIndex(COL_TASK_DESC)),
-                        cursor.getString(cursor.getColumnIndex(COL_DATE_TIME))
+                        cursor.getString(cursor.getColumnIndex(COL_DATE_TIME)),
+                        cursor.getInt(cursor.getColumnIndex(COL_DONE)) == 1
 
                 );
                 items.add(item);

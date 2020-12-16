@@ -40,4 +40,7 @@ dependencies {
     //ButterKnife
     implementation 'com.jakewharton:butterknife:7.0.1'
     annotationProcessor 'com.jakewharton:butterknife:7.0.1'
+
+    //Swipe to refresh implementation
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 }

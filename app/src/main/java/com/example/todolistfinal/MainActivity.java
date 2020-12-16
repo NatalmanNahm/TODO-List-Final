@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -19,12 +20,13 @@ import com.example.todolistfinal.model.TodoTask;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     
     //initialize
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
     private ArrayList<TodoTask> todoList = new ArrayList<>();
+    SwipeRefreshLayout swipeRefreshLayout;
     DBHelper dbHelper;
     AlertDialog.Builder alertBox;
 
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        swipeRefreshLayout = findViewById(R.id.swipe_to_refresh);
 
         recyclerView = findViewById(R.id.task_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
@@ -47,11 +51,23 @@ public class MainActivity extends AppCompatActivity {
             todoList = savedInstanceState.getParcelableArrayList("todoList");
         }
 
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            taskAdapter.clear();
+            todoList = dbHelper.getAllItems();
+            taskAdapter.setTodoList(todoList);
+
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+
+
+
+
     }
     
     public void addTask(View view){
         Intent intent = new Intent(this, AddTaskActivity.class);
-        startActivityForResult(intent, 1);
+        startActivity(intent);
     }
 
     @Override

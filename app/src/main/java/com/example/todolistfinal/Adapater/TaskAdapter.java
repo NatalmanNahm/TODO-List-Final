@@ -3,17 +3,20 @@ package com.example.todolistfinal.Adapater;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistfinal.Database.DBHelper;
+import com.example.todolistfinal.MainActivity;
 import com.example.todolistfinal.R;
 import com.example.todolistfinal.model.TodoTask;
 
@@ -56,49 +59,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         TodoTask todoTask = todoList.get(position);
 
         holder.checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (holder.checkBox.isChecked()) {
-                alertDialog.setMessage(R.string.box_message_true);
-                alertDialog.setPositiveButton("Done", (dialogInterface, i) -> {
-                    dbHelper.setDone(todoTask.getTaskId(), b);
-                    todoList = dbHelper.getAllItems();
-//                    notifyItemRangeChanged(todoList.indexOf(todoTask), todoList.size());
-                    notifyDataSetChanged();
-                });
-                alertDialog.setNegativeButton("Delete", (dialogInterface, i) -> {
-                    dbHelper.deleteItem(todoTask.getTaskId());
-                    todoList = dbHelper.getAllItems();
-                    notifyItemRemoved(holder.getAdapterPosition());
-                });
-                alertDialog.setNeutralButton("Cancel", (dialogInterface, i) -> {
-                    dialogInterface.dismiss();
-                });
-            } else {
-                alertDialog.setMessage(R.string.box_message_false);
-                alertDialog.setPositiveButton("add", (dialogInterface, i) -> {
-                    dbHelper.setDone(todoTask.getTaskId(), b);
-                    todoList = dbHelper.getAllItems();
-//                    notifyItemRangeChanged(todoList.indexOf(todoTask), todoList.size());
-                    notifyDataSetChanged();
-                });
-                alertDialog.setNegativeButton("Delete", (dialogInterface, i) -> {
-                    dbHelper.deleteItem(todoTask.getTaskId());
-                    todoList = dbHelper.getAllItems();
-                    notifyItemRemoved(holder.getAdapterPosition());
-                });
-                alertDialog.setNeutralButton("Cancel", (dialogInterface, i) -> {
-                    dialogInterface.dismiss();
-                });
-            }
-            alertDialog.setTitle("Task Management");
-            AlertDialog box = alertDialog.create();
-            box.show();
+            dbHelper.setDone(todoTask.getTaskId(), b);
+            Toast toast = Toast.makeText(mContext, "Pull to refresh", Toast.LENGTH_SHORT);
+            View toastView = toast.getView();
+            toastView.setBackgroundResource(R.drawable.rounded_container);
+            toast.show();
         });
+
+        holder.delete.setOnClickListener(view -> {
+            TodoTask deleteTask = todoList.get(holder.getAdapterPosition());
+            if (dbHelper.deleteItem(deleteTask.getTaskId())){
+                dbHelper.deleteItem(todoTask.getTaskId());
+                notifyItemRemoved(position);
+            }
+
+        });
+
+
     }
 
     @Override
     public int getItemCount() {
-        if (todoList == null) return 0;
         return todoList.size();
+    }
+
+    public void clear(){
+        todoList.clear();
     }
 
     public void setTodoList(ArrayList<TodoTask> todoList) {
@@ -116,6 +102,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         TextView desc;
         @Bind(R.id.checkBox)
         CheckBox checkBox;
+        @Bind(R.id.delete)
+        TextView delete;
+
         Context mContext;
 
         public TaskViewHolder(@NonNull View itemView) {
@@ -130,6 +119,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             dateTime.setText(todoTask.getDateTime());
             checkBox.setChecked(todoTask.getIsChecked());
             desc.setText(todoTask.getTaskDesc());
+
         }
     }
 

@@ -12,7 +12,7 @@ public class TodoTask implements Parcelable {
     private String taskDesc;
     private String dateTime;
 
-    public TodoTask(int taskId, boolean isChecked, String taskName, String taskDesc, String dateTime) {
+    public TodoTask(int taskId, String taskName, String taskDesc, String dateTime, boolean isChecked) {
         this.taskId = taskId;
         this.isChecked = isChecked;
         this.taskName = taskName;
